@@ -1,0 +1,35 @@
+{
+  "name": "jql-cli",
+  "description": "Commandline tool for writing and running jql queries against mixpanel",
+  "version": "1.0.0",
+  "main": "dist/main.cjs.js",
+  "module": "dist/main.esm.js",
+  "bin": {
+    "jql": "bin/jql"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "babel-core": "^6.26.0",
+    "querystring": "^0.2.0",
+    "rollup": "^0.46.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "yargs": "^9.0.1"
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "devDependencies": {
+    "prettier": "1.7.4",
+    "rollup-watch": "^4.3.1"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ]
+}

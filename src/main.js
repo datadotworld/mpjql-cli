@@ -1,0 +1,78 @@
+import yargs from 'yargs'
+import { prepareCode } from './mixpanel'
+import { performQuery } from './mixpanel'
+// const performQuery = async file => {
+//   console.log(`PERFORM QUERY: ${file}`)
+// }
+
+const prepSettings = settings => {
+  const retVal = {}
+  if (!settings) {
+    return {}
+  }
+  settings = Array.isArray(settings) ? settings : Array(settings)
+  settings.forEach(setting => {
+    let [name, value] = setting.split('=')
+    if (value.indexOf(',') !== -1) {
+      value = value.split(',').map(value => value.trim())
+    }
+    retVal[name.trim()] = value
+  })
+  return retVal
+}
+
+function logError(error) {
+  const message = ['ERROR!']
+  if (error.response) {
+    message.push(error.response.status)
+    message.push(error.response.statusText)
+    if (error.response.data) {
+      message.push(error.response.data.error)
+    }
+  } else {
+    message.push(error)
+  }
+  console.log(message.join('\n'))
+  return message.join('\n')
+}
+
+const argv = yargs
+  .command('query <file>', 'Execute query on mixpanel', {}, argv => {
+    performQuery(argv.file, prepSettings(argv.setting))
+      .then(response => {
+        console.log(response)
+        console.log(
+          response.data ? JSON.stringify(response.data, null, 2) : 'no data'
+        )
+      })
+      .catch(logError)
+  })
+  .command('encode <file>', 'Rollup, encode and echo code', {}, argv => {
+    const settings = prepSettings(argv.setting)
+    const filename = argv.file
+
+    prepareCode(filename, settings, true)
+      .then(code => {
+        const encoded = encodeURIComponent(
+          ['/*', filename, '*/', code].join('')
+        )
+        console.log(encoded)
+      })
+      .catch(logError)
+  })
+  .command('show-code <file>', 'Rollup and echo code', {}, argv => {
+    const settings = prepSettings(argv.setting)
+    const filename = argv.file
+
+    prepareCode(filename, settings, false)
+      .then(code => console.log(code))
+      .catch(logError)
+  })
+  .option('setting', {
+    alias: 's',
+    describe:
+      '"SETTINGS" will be replace with an gathered settings (key=value)',
+    type: 'string'
+  })
+  .demandCommand()
+  .help().argv
