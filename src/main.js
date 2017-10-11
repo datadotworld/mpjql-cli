@@ -64,7 +64,7 @@ const argv = yargs
   })
   .option('setting', {
     alias: 's',
-    describe: '"SETTINGS" will be replaced with all settings (key=value)',
+    describe: 'key=value (replaces __SETTINGS__ in scripts)',
     type: 'string'
   })
   .demandCommand(
