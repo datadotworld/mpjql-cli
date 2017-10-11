@@ -1,9 +1,5 @@
 import yargs from 'yargs'
-import { prepareCode } from './mixpanel'
-import { performQuery } from './mixpanel'
-// const performQuery = async file => {
-//   console.log(`PERFORM QUERY: ${file}`)
-// }
+import { prepareCode, performQuery } from './mixpanel'
 
 const prepSettings = settings => {
   const retVal = {}
@@ -37,14 +33,20 @@ function logError(error) {
 }
 
 const argv = yargs
+  .usage('jql query <jql-file> [-s foo=bar]')
   .command('query <file>', 'Execute query on mixpanel', {}, argv => {
     performQuery(argv.file, prepSettings(argv.setting))
       .then(response => {
-        console.log(response)
-        console.log(
-          response.data ? JSON.stringify(response.data, null, 2) : 'no data'
-        )
+        console.log(response.data ? JSON.stringify(response.data, null, 2) : '')
       })
+      .catch(logError)
+  })
+  .command('show-code <file>', 'Rollup and echo code', {}, argv => {
+    const settings = prepSettings(argv.setting)
+    const filename = argv.file
+
+    prepareCode(filename, settings, false)
+      .then(code => console.log(code))
       .catch(logError)
   })
   .command('encode <file>', 'Rollup, encode and echo code', {}, argv => {
@@ -60,19 +62,16 @@ const argv = yargs
       })
       .catch(logError)
   })
-  .command('show-code <file>', 'Rollup and echo code', {}, argv => {
-    const settings = prepSettings(argv.setting)
-    const filename = argv.file
-
-    prepareCode(filename, settings, false)
-      .then(code => console.log(code))
-      .catch(logError)
-  })
   .option('setting', {
     alias: 's',
-    describe:
-      '"SETTINGS" will be replace with an gathered settings (key=value)',
+    describe: '"SETTINGS" will be replaced with all settings (key=value)',
     type: 'string'
   })
-  .demandCommand()
+  .demandCommand(
+    1,
+    'Please specify at least one of the following: query, show-code, encode'
+  )
+  .epilogue(
+    'For more information, please visit https://github.com/datadotworld/mpjql-cli/'
+  )
   .help().argv

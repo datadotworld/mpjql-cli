@@ -23,16 +23,7 @@ if (settings.startDate) {
 }
 
 function main() {
-  return Events({
-    from_date: startDate,
-    to_date: endDate
-  })
-    .groupByUser((user, events) => {
-      user = user || 0
-      user += events.length
-      return user
-    })
-    .map(user => {
-      return `${user.key[0]}: ${user.value}`
-    })
+  return Events({ from_date: startDate, to_date: endDate })
+    .groupByUser((user, events) => (user || 0) + events.length)
+    .map(user => `${user.key[0]}: ${user.value}`)
 }
