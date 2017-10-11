@@ -49,7 +49,7 @@ const argv = yargs
       .then(code => console.log(code))
       .catch(logError)
   })
-  .command('encode <file>', 'Rollup, encode and echo code', {}, argv => {
+  .command('encode <file>', 'Rollup, uri-encode and echo code', {}, argv => {
     const settings = prepSettings(argv.setting)
     const filename = argv.file
 
