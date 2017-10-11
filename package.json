@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "main": "dist/main.cjs.js",
   "module": "dist/main.esm.js",
+  "license": "Apache-2.0",
   "bin": {
     "jql": "bin/jql"
   },
@@ -29,5 +30,5 @@
     "build": "rollup -c",
     "dev": "rollup -c -w"
   },
-  "files": ["dist", "bin"]
+  "files": ["dist", "bin", "example"]
 }
