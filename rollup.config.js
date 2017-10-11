@@ -13,7 +13,7 @@ const external = [
 
 export default [
   {
-    entry: './src/main.js',
+    entry: './src/cli.js',
     external: external,
     targets: [
       { dest: 'dist/cli.cjs.js', format: 'cjs' },
