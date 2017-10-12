@@ -1,12 +1,17 @@
 # MixPanel JQL Command Line Interface
 
-Installing this package will give you a new commandline tool called `jql`.  This
-tool will allow you to write JQL using modern javascript techniques, including
-splitting code into library modules.
+Installing this package will give you a new command line tool called `jql`. This
+enables you to write JQL using modern javascript techniques, including:
+
+* Split common code into modules
+* Modern ES2015 Syntax
+* String Template Literals
+* etc.
+
 
 ## Example
 
-Common functions can be split out into library files.
+Move commonly used functions to their own file...
 ```
 // date.js
 export const dateToString = e => {
@@ -14,7 +19,7 @@ export const dateToString = e => {
 }
 ```
 
-And then imported when needed into jql scripts.
+...and then import them when needed.
 ```
 // example.js
 import { dateToString } from './date'
@@ -31,8 +36,9 @@ function main() {
 }
 ```
 
-The `jql` command line tool uses rollup.js, babel and uglify under the hood
-to compile the script before sending it to MixPanel.
+The `jql` command line tool uses [Rollup.js](https://rollupjs.org/),
+[Babel](https://babeljs.io/) and [Uglify](https://github.com/mishoo/UglifyJS)
+under the hood to compile the script before sending it to MixPanel.
 
 ## Installation
 
@@ -40,21 +46,45 @@ to compile the script before sending it to MixPanel.
 npm install -g mpjql-cli
 ```
 
-Visit mixpanel.com and copy your secret from their settings page. Set `MPSECRET`
-to the secret.
+Visit [MixPanel](http://mixpanel.com) and copy your secret from your user
+settings page.
+```
+export MPSECRET=<secret>
+```
+Set this either locally in your terminal, or in `~/.profile`.
 
 ## Basic Usage
 
-Create a JQL file using modern javascript, then run the query:
+Create a JQL query, then run it as follows:
 
 ```
 jql query myQuery.js
 ```
 
+Results will be streamed to the terminal.  Redirect to a file or other commands.
+
+```
+jql query myQuery.js > output.json
+```
+
+
 
 # Advanced Usage
 
-## Settings
+## JQ
+[jq](https://stedolan.github.io/jq/) is an amazing tool for highlighting
+JSON results, or doing additional filtering of your results.
+```
+jql query myQuery.js | jq
+```
+
+It also has the capability to produce `CSV` with selected fields on the fly from
+returned JSON.
+```
+jql query myQuery.js | jq -r '.results[] | [.field1, .field2] | @csv' > output.csv
+```
+
+## Passing settings to your scripts
 
 Settings can be passed on the command line to configure a script. This can be
 extremely useful when dealing with scripts that can be configured to find info
@@ -82,21 +112,27 @@ const settings = {
 function main() { /* ... */ }
 ```
 
-## `show-code`
+# CLI commands
 
-You can debug how a script is being compiled by replacing `query` with `show-code`
+## `query`
 
+Compile a script and execute it against your MixPanel account. Prints the resulting
+JSON into the `STDOUT`.
 ```
-jql show-code myQuery.js --setting='foo=bar' --setting='baz=boo,bop'
+jql query myQuery.js
+```
+
+## `show-code`
+You can debug how a script is being compiled by replacing `query` with
+`show-code`. This prints the compiled javascript to the terminal for inspection.
+```
+jql show-code myQuery.js
 ```
 
 
 ## `encode`
-
-If you are integrating your scripts with another platform (such as klipfolio)
-where you need the script URI encoded for some reason, you can replace `query`
-with `encode`.
-
+If you are integrating your scripts with another platform (such as Klipfolio)
+where you need the script URI encoded.
 ```
-jql encode myQuery.js --setting='foo=bar' --setting='baz=boo,bop'
+jql encode myQuery.js
 ```
