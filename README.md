@@ -136,3 +136,8 @@ where you need the script URI encoded.
 ```
 jql encode myQuery.js
 ```
+
+# Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how you can help
+make this tool better.
