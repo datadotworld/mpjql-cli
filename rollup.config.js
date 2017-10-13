@@ -32,10 +32,7 @@ export default [
   {
     entry: './src/cli.js',
     external: external,
-    targets: [
-      { dest: 'dist/cli.cjs.js', format: 'cjs' },
-      { dest: 'dist/cli.esm.js', format: 'es' }
-    ]
+    targets: [{ dest: 'dist/cli.cjs.js', format: 'cjs' }]
   },
   {
     entry: './src/mixpanel.js',
