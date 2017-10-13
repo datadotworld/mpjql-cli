@@ -12,7 +12,7 @@ enables you to write JQL using modern javascript techniques, including:
 ## Example
 
 Move commonly used functions to their own file...
-```
+```js
 // date.js
 export const dateToString = e => {
   return new Date(Number(e)).toISOString().substr(0, 10)
@@ -20,7 +20,7 @@ export const dateToString = e => {
 ```
 
 ...and then import them when needed.
-```
+```js
 // example.js
 import { dateToString } from './date'
 const today = new Date()
@@ -97,13 +97,13 @@ jql query myQuery.js --setting='foo=bar' --setting='baz=boo,bop'
 
 The special variable `__SETTINGS__` will be replaced with an object containing
 all of your settings.
-```
+```js
 // myQuery.js
 const settings = __SETTINGS__
 function main() { /* ... */ }
 ```
 will effectively become...
-```
+```js
 // myQuery.js
 const settings = {
   'foo':'bar',
