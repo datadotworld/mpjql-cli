@@ -1,7 +1,6 @@
 {
   "name": "mpjql-cli",
-  "description":
-    "Commandline tool for writing and running jql queries against mixpanel",
+  "description": "Commandline tool for writing and running jql queries against mixpanel",
   "version": "1.0.0",
   "main": "dist/main.cjs.js",
   "module": "dist/main.esm.js",
@@ -31,5 +30,9 @@
     "build": "rollup -c",
     "dev": "rollup -c -w"
   },
-  "files": ["dist", "bin", "example"]
+  "files": [
+    "dist",
+    "bin",
+    "example"
+  ]
 }
