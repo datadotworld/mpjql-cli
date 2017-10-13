@@ -70,7 +70,7 @@ const argv = yargs
     const settings = prepSettings(argv.setting)
     const filename = argv.file
 
-    prepareCode(filename, settings)
+    prepareCode(filename, settings, true)
       .then(code => {
         const encoded = encodeURIComponent(
           ['/*', filename, '*/', code].join('')

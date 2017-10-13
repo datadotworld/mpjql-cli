@@ -31,7 +31,7 @@ const babelPlugin = babel({
   babelrc: false
 })
 
-export const prepareCode = async (filename, settings) => {
+export const prepareCode = async (filename, settings, uglifyCode = false) => {
   const settingsStr = JSON.stringify(settings)
   const replacePlugin = replace({
     DW_SETTINGS: settingsStr,
@@ -39,7 +39,7 @@ export const prepareCode = async (filename, settings) => {
   })
   const bundle = await rollup({
     entry: filename,
-    plugins: encode
+    plugins: uglifyCode
       ? [replacePlugin, babelPlugin, uglify()]
       : [replacePlugin, babelPlugin],
     treeshake: false
